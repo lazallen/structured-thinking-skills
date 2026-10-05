@@ -1,0 +1,39 @@
+%% Sample CRT fixture (flowchart BT: roots bottom, UDEs top)
+%% Nodes: UDEs yellow, root causes red, mid-tree neutral, AND junctions white
+%% Arrows: colour = evidence type, dashed = weak, thick = vicious cycle
+flowchart BT
+  classDef ude fill:#FACC15,stroke:#A16207,color:#1c1917
+  classDef rootCause fill:#EF4444,stroke:#991B1B,color:#ffffff
+  classDef mid fill:#F5F5F4,stroke:#78716C,color:#1c1917
+  classDef andJunction fill:#ffffff,stroke:#1c1917,stroke-width:2px,color:#1c1917,font-size:11px
+
+  ROOT1["There is no agreed rule for what not to start"]:::rootCause
+  ROOT2["Teams are rewarded for local efficiency over flow"]:::rootCause
+  MID1["WIP at the constraint is high"]:::mid
+  MID2["Priorities change daily"]:::mid
+  A1((AND)):::andJunction
+  UDE1["Customer deliveries are late most weeks"]:::ude
+  UDE2["Expediting costs keep rising"]:::ude
+
+  %% N ROOT1: reported — planning lead
+  %% N MID1: observed — WIP board, last 8 weeks
+  %% N UDE1: observed — delivery dashboard
+  %% L0 ROOT1-->MID2: inferred, grade plausible
+  ROOT1 --> MID2
+  %% L1, L2: AND inputs (unstyled)
+  ROOT2 --- A1
+  MID2 --- A1
+  %% L3 A1-->MID1: inferred, grade weak — assumes planners can't see constraint WIP
+  A1 --> MID1
+  %% L4 MID1-->UDE1: observed, grade solid
+  MID1 --> UDE1
+  %% L5 MID1-->UDE2: reported (finance), grade plausible
+  MID1 --> UDE2
+  %% L6 UDE2==>MID2: vicious cycle — expediting reshuffles priorities; reported, grade plausible
+  UDE2 ==>|reinforces| MID2
+
+  linkStyle 0 stroke:#D97706,stroke-width:2px
+  linkStyle 3 stroke:#D97706,stroke-width:2px,stroke-dasharray:6 4
+  linkStyle 4 stroke:#15803D,stroke-width:2px
+  linkStyle 5 stroke:#2563EB,stroke-width:2px
+  linkStyle 6 stroke:#2563EB,stroke-width:3px

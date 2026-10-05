@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Critical Chain viewer</title>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    const statusEl = document.getElementById("status");
+    mermaid.initialize({ startOnLoad: false, theme: "neutral" });
+    try {
+      const src = document.getElementById("source").textContent.trim();
+      const { svg } = await mermaid.render("critical-chain-diagram", src);
+      document.getElementById("diagram").innerHTML = svg;
+      statusEl.textContent = "Diagram rendered";
+      statusEl.dataset.state = "ok";
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = "Diagram failed";
+      statusEl.dataset.state = "error";
+      document.getElementById("diagram").textContent = String(err);
+    }
+  </script>
+  <style>
+    :root { color-scheme: light; font-family: "Source Sans 3", "Segoe UI", sans-serif; }
+    body { margin: 0; padding: 1.25rem; background: #f6f3ee; color: #1c1a17; }
+    h1 { font-size: 1.15rem; font-weight: 650; margin: 0 0 0.75rem; }
+    #status {
+      display: inline-block; padding: 0.35rem 0.65rem; border-radius: 0.35rem;
+      background: #e7e0d5; font-size: 0.9rem; font-weight: 600;
+    }
+    #status[data-state="ok"] { background: #d7ead2; }
+    #status[data-state="error"] { background: #f0d0cc; }
+    #diagram { margin-top: 1rem; padding: 1rem; background: #fff; border: 1px solid #d9d1c5; overflow: auto; }
+    pre { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Critical Chain</h1>
+  <div id="status" data-state="pending">Rendering…</div>
+  <div id="diagram"></div>
+  <pre id="source" class="mermaid">__MERMAID_SOURCE__</pre>
+</body>
+</html>

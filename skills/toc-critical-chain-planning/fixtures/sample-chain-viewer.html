@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Critical Chain viewer</title>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    const statusEl = document.getElementById("status");
+    mermaid.initialize({ startOnLoad: false, theme: "neutral" });
+    try {
+      const src = document.getElementById("source").textContent.trim();
+      const { svg } = await mermaid.render("critical-chain-diagram", src);
+      document.getElementById("diagram").innerHTML = svg;
+      statusEl.textContent = "Diagram rendered";
+      statusEl.dataset.state = "ok";
+    } catch (err) {
+      console.error(err);
+      statusEl.textContent = "Diagram failed";
+      statusEl.dataset.state = "error";
+      document.getElementById("diagram").textContent = String(err);
+    }
+  </script>
+  <style>
+    :root { color-scheme: light; font-family: "Source Sans 3", "Segoe UI", sans-serif; }
+    body { margin: 0; padding: 1.25rem; background: #f6f3ee; color: #1c1a17; }
+    h1 { font-size: 1.15rem; font-weight: 650; margin: 0 0 0.75rem; }
+    #status {
+      display: inline-block; padding: 0.35rem 0.65rem; border-radius: 0.35rem;
+      background: #e7e0d5; font-size: 0.9rem; font-weight: 600;
+    }
+    #status[data-state="ok"] { background: #d7ead2; }
+    #status[data-state="error"] { background: #f0d0cc; }
+    #diagram { margin-top: 1rem; padding: 1rem; background: #fff; border: 1px solid #d9d1c5; overflow: auto; }
+    pre { display: none; }
+  </style>
+</head>
+<body>
+  <h1>Critical Chain</h1>
+  <div id="status" data-state="pending">Rendering…</div>
+  <div id="diagram"></div>
+  <pre id="source" class="mermaid">flowchart LR
+  classDef chain fill:#FDE68A,stroke:#B45309,stroke-width:3px,color:#1c1917
+  classDef feed fill:#F5F5F4,stroke:#78716C,color:#1c1917
+  classDef buffer fill:#DBEAFE,stroke:#1D4ED8,stroke-dasharray:4 3,color:#1e3a8a
+  classDef goal fill:#DCFCE7,stroke:#15803D,stroke-width:2px,color:#14532d
+
+  Spec["Draft spec&lt;br/&gt;3d · C2 · PM"]:::chain
+  Spike["Spike payments API&lt;br/&gt;2d · C4 ⚠ · Dev A"]:::chain
+  Build["Build slice&lt;br/&gt;5d · C3 · Dev A"]:::chain
+  Review["Stakeholder review&lt;br/&gt;1d · C1 · Head of Sales"]:::chain
+  SecPack["Prepare security pack&lt;br/&gt;2d · C2 · Sam"]:::feed
+  SecReview["Security review&lt;br/&gt;1d · C2 · Security team"]:::feed
+  FB(["feeding buffer 1d"]):::buffer
+  CB(["capacity buffer:&lt;br/&gt;alert Head of Sales"]):::buffer
+  PB(["project buffer 4d"]):::buffer
+  Goal["Beta live by 14 Nov&lt;br/&gt;buffer remaining: 4d"]:::goal
+
+  Spec --&gt; Spike
+  Spike --&gt; Build
+  Build --&gt; Review
+  Review --&gt; PB
+  PB --&gt; Goal
+  SecPack --&gt; SecReview
+  SecReview --&gt; FB
+  FB --&gt; Review
+  CB -.-&gt; Review
+</pre>
+</body>
+</html>

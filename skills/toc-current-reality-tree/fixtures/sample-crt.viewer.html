@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>CRT viewer — sample-crt.mmd</title>
+  <style>
+    :root { color-scheme: light; }
+    body {
+      margin: 0;
+      font-family: "IBM Plex Sans", "Segoe UI", sans-serif;
+      background: #f6f1e8;
+      color: #1c1917;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.75rem 1.25rem;
+      border-bottom: 1px solid #d6cfc4;
+      background: #fffaf2;
+    }
+    h1 { font-size: 1rem; font-weight: 600; margin: 0; }
+    #status {
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      background: #e7e0d4;
+    }
+    #status[data-state="ok"] { background: #d8efe0; color: #14532d; }
+    #status[data-state="err"] { background: #fde2e1; color: #7f1d1d; }
+    main { padding: 1.25rem; overflow: auto; }
+    .mermaid { background: #fff; padding: 1rem; border-radius: 8px; }
+    #legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.1rem;
+      padding: 0.6rem 1.25rem;
+      font-size: 0.8rem;
+      border-bottom: 1px solid #d6cfc4;
+      background: #fffaf2;
+    }
+    #legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+    .swatch { width: 0.9rem; height: 0.9rem; border-radius: 3px; border: 1px solid #78716c; }
+    .line { width: 1.6rem; height: 0; border-top: 2px solid; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Current Reality Tree — sample-crt.mmd</h1>
+    <div id="status" data-state="pending">Rendering…</div>
+  </header>
+  <div id="legend" aria-label="Legend">
+    <span><i class="swatch" style="background:#FACC15"></i>Undesirable effect</span>
+    <span><i class="swatch" style="background:#EF4444"></i>Root cause</span>
+    <span><i class="line" style="border-color:#15803D"></i>Observed</span>
+    <span><i class="line" style="border-color:#2563EB"></i>Reported</span>
+    <span><i class="line" style="border-color:#D97706"></i>Inferred</span>
+    <span><i class="line" style="border-color:#78716C"></i>Assumption</span>
+    <span><i class="line" style="border-top-style:dashed;border-color:#1c1917"></i>Weak link</span>
+    <span><i class="line" style="border-top-width:4px;border-color:#1c1917"></i>Vicious cycle</span>
+  </div>
+  <main>
+    <pre class="mermaid">%% Sample CRT fixture (flowchart BT: roots bottom, UDEs top)
+%% Nodes: UDEs yellow, root causes red, mid-tree neutral, AND junctions white
+%% Arrows: colour = evidence type, dashed = weak, thick = vicious cycle
+flowchart BT
+  classDef ude fill:#FACC15,stroke:#A16207,color:#1c1917
+  classDef rootCause fill:#EF4444,stroke:#991B1B,color:#ffffff
+  classDef mid fill:#F5F5F4,stroke:#78716C,color:#1c1917
+  classDef andJunction fill:#ffffff,stroke:#1c1917,stroke-width:2px,color:#1c1917,font-size:11px
+
+  ROOT1["There is no agreed rule for what not to start"]:::rootCause
+  ROOT2["Teams are rewarded for local efficiency over flow"]:::rootCause
+  MID1["WIP at the constraint is high"]:::mid
+  MID2["Priorities change daily"]:::mid
+  A1((AND)):::andJunction
+  UDE1["Customer deliveries are late most weeks"]:::ude
+  UDE2["Expediting costs keep rising"]:::ude
+
+  %% N ROOT1: reported — planning lead
+  %% N MID1: observed — WIP board, last 8 weeks
+  %% N UDE1: observed — delivery dashboard
+  %% L0 ROOT1--&gt;MID2: inferred, grade plausible
+  ROOT1 --&gt; MID2
+  %% L1, L2: AND inputs (unstyled)
+  ROOT2 --- A1
+  MID2 --- A1
+  %% L3 A1--&gt;MID1: inferred, grade weak — assumes planners can't see constraint WIP
+  A1 --&gt; MID1
+  %% L4 MID1--&gt;UDE1: observed, grade solid
+  MID1 --&gt; UDE1
+  %% L5 MID1--&gt;UDE2: reported (finance), grade plausible
+  MID1 --&gt; UDE2
+  %% L6 UDE2==&gt;MID2: vicious cycle — expediting reshuffles priorities; reported, grade plausible
+  UDE2 ==&gt;|reinforces| MID2
+
+  linkStyle 0 stroke:#D97706,stroke-width:2px
+  linkStyle 3 stroke:#D97706,stroke-width:2px,stroke-dasharray:6 4
+  linkStyle 4 stroke:#15803D,stroke-width:2px
+  linkStyle 5 stroke:#2563EB,stroke-width:2px
+  linkStyle 6 stroke:#2563EB,stroke-width:3px</pre>
+  </main>
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs";
+    const status = document.getElementById("status");
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      flowchart: {
+        htmlLabels: true,
+        wrappingWidth: 320,
+        nodeSpacing: 48,
+        rankSpacing: 56,
+      },
+    });
+    try {
+      await mermaid.run({ querySelector: ".mermaid" });
+      status.textContent = "Diagram rendered";
+      status.dataset.state = "ok";
+      document.title = "Diagram rendered — " + document.title;
+    } catch (err) {
+      status.textContent = "Diagram failed";
+      status.dataset.state = "err";
+      console.error(err);
+    }
+  </script>
+</body>
+</html>

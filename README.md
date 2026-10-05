@@ -1,2 +1,29 @@
-# structured-thinking-skills
-Skills i use to help me structure my thinking, different skills for different kinds of problems
+# Structured Thinking Skills
+
+Skills I use to help me structure my thinking — different skills for different kinds of problems.
+
+## Install
+
+```bash
+npx skills add lazallen/structured-thinking-skills
+```
+
+One skill:
+
+```bash
+npx skills add lazallen/structured-thinking-skills --skill toc-critical-chain-planning
+npx skills add lazallen/structured-thinking-skills --skill toc-current-reality-tree
+```
+
+Optional: add `-g` for a global install.
+
+## Skills
+
+| Skill | Question it helps answer |
+| --- | --- |
+| `toc-current-reality-tree` | What is going wrong, and why? (including past incidents the system will repeat) |
+| `toc-critical-chain-planning` | How do we plan and control getting something done quickly under real dependencies and people’s capacity? |
+
+## License
+
+MIT — see [LICENSE](LICENSE).

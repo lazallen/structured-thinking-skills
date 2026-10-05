@@ -1,0 +1,26 @@
+flowchart LR
+  classDef chain fill:#FDE68A,stroke:#B45309,stroke-width:3px,color:#1c1917
+  classDef feed fill:#F5F5F4,stroke:#78716C,color:#1c1917
+  classDef buffer fill:#DBEAFE,stroke:#1D4ED8,stroke-dasharray:4 3,color:#1e3a8a
+  classDef goal fill:#DCFCE7,stroke:#15803D,stroke-width:2px,color:#14532d
+
+  Spec["Draft spec<br/>3d · C2 · PM"]:::chain
+  Spike["Spike payments API<br/>2d · C4 ⚠ · Dev A"]:::chain
+  Build["Build slice<br/>5d · C3 · Dev A"]:::chain
+  Review["Stakeholder review<br/>1d · C1 · Head of Sales"]:::chain
+  SecPack["Prepare security pack<br/>2d · C2 · Sam"]:::feed
+  SecReview["Security review<br/>1d · C2 · Security team"]:::feed
+  FB(["feeding buffer 1d"]):::buffer
+  CB(["capacity buffer:<br/>alert Head of Sales"]):::buffer
+  PB(["project buffer 4d"]):::buffer
+  Goal["Beta live by 14 Nov<br/>buffer remaining: 4d"]:::goal
+
+  Spec --> Spike
+  Spike --> Build
+  Build --> Review
+  Review --> PB
+  PB --> Goal
+  SecPack --> SecReview
+  SecReview --> FB
+  FB --> Review
+  CB -.-> Review

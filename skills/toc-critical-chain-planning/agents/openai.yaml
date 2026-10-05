@@ -1,0 +1,5 @@
+interface:
+  display_name: "Critical Chain planning"
+  short_description: "Plan/control delivery around capacity-adjusted critical chain"
+policy:
+  allow_implicit_invocation: true
