@@ -29,3 +29,7 @@ Optional: add `-g` for a global install.
 ## License
 
 MIT — see [LICENSE](LICENSE).
+
+## Acknowledgements
+
+Thank you to [Clarke Ching](https://www.clarkech.ing/) for years of advice and friendship. His work on bottlenecks has influenced the language of the Flow and Constraints skill.

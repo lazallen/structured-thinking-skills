@@ -297,7 +297,6 @@ These choices are intentional practice decisions, stated here so an agent can fo
 
 - **Find / Optimize / Coordinate / Collaborate / Curate / Upgrade** over Exploit / Subordinate / Elevate in default speech — manufacturing-era words land badly when the constraint is a person; purpose stays “protect and improve constrained capacity; align the rest around it.”
 - **People / capacity / capability** — never “resources.”
-- **Ching practice notes may inform moves; Ching product branding must not name the Approach.**
 - **Policy is a why**, not automatically a separate constraint type to chase in v1.
 - **Market can be the constraint** — insufficient demand is in scope.
 - **Validated value** over release count or utilization as the throughput story in knowledge work.

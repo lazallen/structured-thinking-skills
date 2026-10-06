@@ -9,7 +9,7 @@ Help the human answer **What is constraining system flow, and what should change
 
 This skill finds the real constraint in a **recurring** process and focuses improvement there. It does not plan one-off project networks, and it does not build a causal diagnosis tree.
 
-Call the method **Flow and Constraints**. Do not title it Theory of Constraints (the whole body of work), Drum-Buffer-Rope (a factory scheduling recipe: pace the system to the constraint, buffer it, release work to its rhythm), or Ching product names (for example FOCCCUS or “bottleneck guy”).
+Call the method **Flow and Constraints**.
 
 ## Opening
 
@@ -80,8 +80,7 @@ Prefer **group validation** of the map (cross-functional) over one person’s me
 
 - Not Critical Chain project planning.
 - Not CRT/Cloud by default — hop only when the binding why is significantly outside the group’s control.
-- Not plant DBR scheduling or a full Throughput Accounting course.
-- Not Ching product branding as the method title.
+- Not factory production scheduling or a full Throughput Accounting course.
 - Do not optimize every local step or chase utilization.
 - Do not invent the human’s constraint or present a plausible map as verified.
 - Related methods stay separate (see facilitation hand-offs). Suggest them; don’t blend them in.
