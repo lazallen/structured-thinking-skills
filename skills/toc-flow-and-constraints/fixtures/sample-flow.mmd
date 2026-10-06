@@ -1,0 +1,20 @@
+flowchart LR
+  classDef step fill:#F5F5F4,stroke:#78716C,color:#1c1917
+  classDef constraint fill:#FDE68A,stroke:#B45309,stroke-width:3px,color:#1c1917
+  classDef queue fill:#DBEAFE,stroke:#1D4ED8,stroke-dasharray:4 3,color:#1e3a8a
+  classDef outcome fill:#DCFCE7,stroke:#15803D,stroke-width:2px,color:#14532d
+
+  Desire["Desired outcome:<br/>users adopt billing change"]:::outcome
+  Spec["Specify<br/>PM + eng"]:::step
+  QReview(["queue: 2–6 items<br/>for Sam"]):::queue
+  Review["Design review<br/>Sam"]:::constraint
+  Build["Build<br/>eng pair"]:::step
+  Validate["Validate with users<br/>PM"]:::step
+  Done["Delivered + validated"]:::outcome
+
+  Desire --> Spec
+  Spec -->|"wait 1–3d"| QReview
+  QReview --> Review
+  Review -->|"wait 0–2d"| Build
+  Build -->|"wait 3–7d"| Validate
+  Validate --> Done
